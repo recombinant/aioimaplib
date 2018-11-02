@@ -49,4 +49,4 @@ def create_temp_self_signed_cert():
     key_file.close()
 
     # Return file names
-    return (cert_file_name, key_file_name)
+    return cert_file_name, key_file_name
