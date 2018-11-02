@@ -242,14 +242,14 @@ class TestImapServerWithImaplib(WithImapServer, TestCase):
         imap_client = await self.login_user('user', 'pass', select=True)
 
         result, data = await asyncio.wait_for(
-            self.loop.run_in_executor(None, functools.partial(imap_client.uid, 'store', '1', '+FLAGS.SILENT (\Seen \Answered)')), 1)
+            self.loop.run_in_executor(None, functools.partial(imap_client.uid, 'store', '1', '+FLAGS.SILENT (\\Seen \\Answered)')), 1)
         self.assertEqual('OK', result)
 
         result, data = await asyncio.wait_for(
             self.loop.run_in_executor(None, functools.partial(imap_client.uid, 'fetch', '1', 'UID (FLAGS)')), 1)
 
         self.assertEqual('OK', result)
-        self.assertEqual([b'1 (UID 1 FLAGS (\Seen \Answered))'], data)
+        self.assertEqual([b'1 (UID 1 FLAGS (\\Seen \\Answered))'], data)
 
     async def test_store_and_search_by_keyword(self):
         self.imapserver.receive(Mail.create(['user']))
